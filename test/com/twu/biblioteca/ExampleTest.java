@@ -19,4 +19,5 @@ public class ExampleTest {
 
     //Does every method have to return something?
     //I'm Unsure of how to test void methods or methods that require user input
+
 }

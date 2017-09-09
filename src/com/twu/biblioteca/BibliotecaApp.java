@@ -37,8 +37,12 @@ public class BibliotecaApp {
         decideMainMenuAction(readUserChoice());
     }
 
-    private static void decideMainMenuAction(int userChoice) {
-        printBookList();
+    public static void decideMainMenuAction(int userChoice) {
+        if(userChoice != 1){
+            System.out.println("Select a valid option!");
+        }else{
+            printBookList();
+        }
     }
 
     public static void printBookList() {
