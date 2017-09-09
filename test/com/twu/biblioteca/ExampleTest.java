@@ -11,4 +11,9 @@ public class ExampleTest {
     public void testWelcomeMessage() {
         assertEquals("Hello, Welcome to Biblioteca!", BibliotecaApp.welcomeMessage());
     }
+
+    @Test
+    public void testMainMenu() {
+        assertEquals("Option 1: List Books", BibliotecaApp.mainMenu());
+    }
 }
