@@ -19,6 +19,12 @@ public class BibliotecaApp {
         add(new Book("One Hundred Years of Solitude", "J. R. R. Tolkien", 1954));
     }};
 
+    private static List<String> menu = new ArrayList<String>()
+    {{
+        add("Quit");
+        add("List Books");
+    }};
+
     public static void main(String[] args) {
 
         System.out.println(welcomeMessage() + "\n");
@@ -33,15 +39,21 @@ public class BibliotecaApp {
     }
 
     public static void mainMenu() {
-        System.out.println(displayMainMenu());
-        decideMainMenuAction(readUserChoice());
+        do {
+            displayMainMenu();
+        }while(decideMainMenuAction(readUserChoice()));
     }
 
-    public static void decideMainMenuAction(int userChoice) {
-        if(userChoice != 1){
+    public static Boolean decideMainMenuAction(int userChoice) {
+        if (userChoice == 0){
+            return false;
+        }
+        else if(userChoice != 1){
             System.out.println("Select a valid option!");
+            return true;
         }else{
             printBookList();
+            return true;
         }
     }
 
@@ -51,6 +63,7 @@ public class BibliotecaApp {
         for (Book book : books){
             System.out.printf("%-35s%-25s%-4s\n", book.getTitle(), book.getAuthor(), book.getDatePublished());
         }
+        System.out.println("----------------------------------------------------------------");
     }
 
     private static int readUserChoice() {
@@ -58,7 +71,12 @@ public class BibliotecaApp {
         return reader.nextInt();
     }
 
-    public static String displayMainMenu() {
-        return "Option 1: List Books";
+    public static void displayMainMenu() {
+        System.out.println("Main Menu: ");
+        System.out.println("--------------------");
+        for (int i = 0; i < menu.size(); i++){
+            System.out.println("Option " + i + ": " + menu.get(i));
+        }
+        System.out.println("--------------------");
     }
 }
