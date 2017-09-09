@@ -7,11 +7,13 @@ public class Book {
     private String title;
     private String author;
     private int datePublished;
+    private boolean checkedOut;
 
-    public Book (String title, String author, int datePublished){
+    public Book (String title, String author, int datePublished, boolean checkedOut){
         this.title = title;
         this.author = author;
         this.datePublished = datePublished;
+        this.checkedOut = checkedOut;
     }
 
     public void setTitle(String newTitle){
@@ -26,6 +28,10 @@ public class Book {
         this.datePublished = newDate;
     }
 
+    public void setCheckedOut(boolean newCheckedOut){
+        this.checkedOut = newCheckedOut;
+    }
+
     public String getTitle(){
         return title;
     }
@@ -36,5 +42,9 @@ public class Book {
 
     public int getDatePublished(){
         return datePublished;
+    }
+
+    public boolean getCheckedOut(){
+        return checkedOut;
     }
 }
