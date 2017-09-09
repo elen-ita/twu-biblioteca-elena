@@ -1,21 +1,22 @@
 package com.twu.biblioteca;
 
 import java.util.*;
+import com.twu.biblioteca.Book;
 
 public class BibliotecaApp {
 
-    static final List<String> books = new ArrayList<String>()
+    private static ArrayList<Book> books = new ArrayList<Book>()
     {{
-        add("The Great Gatsby");
-        add("The Grapes of Wrath");
-        add("Nineteen Eighty-Four");
-        add("Ulysses");
-        add("Lolita");
-        add("Catch-22");
-        add("The Catcher in the Rye");
-        add("Beloved");
-        add("To Kill a Mockingbird");
-        add("One Hundred Years of Solitude");
+        add(new Book("The Great Gatsby","F. Scott Fitzgerald", 1925));
+        add(new Book("The Grapes of Wrath", "John Steinbeck", 1939));
+        add(new Book("Nineteen Eighty-Four","George Orwell", 1949));
+        add(new Book("Ulysses", "James Joyce", 1918));
+        add(new Book("Lolita", "Vladimir Nabakov", 1955));
+        add(new Book("Catch-22", "Joseph Heller", 1961));
+        add(new Book("The Catcher in the Rye", "J.D. Salinger", 1951));
+        add(new Book("Beloved", "Toni Morrison", 1987));
+        add(new Book("To Kill a Mockingbird", "Harper Lee", 1960));
+        add(new Book("One Hundred Years of Solitude", "J. R. R. Tolkien", 1954));
     }};
 
     public static void main(String[] args) {
@@ -41,8 +42,10 @@ public class BibliotecaApp {
     }
 
     public static void printBookList() {
-        for (String book : books){
-                 System.out.println(book);
+        System.out.printf("%-35s%-25s%-4s\n", "Title", "Author", "Year");
+        System.out.println("----------------------------------------------------------------");
+        for (Book book : books){
+            System.out.printf("%-35s%-25s%-4s\n", book.getTitle(), book.getAuthor(), book.getDatePublished());
         }
     }
 
