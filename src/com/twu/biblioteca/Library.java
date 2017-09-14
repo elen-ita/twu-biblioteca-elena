@@ -19,16 +19,35 @@ public class Library {
         add(new Book("One Hundred Years of Solitude", "J. R. R. Tolkien", 1954, false));
     }};
 
+    public static ArrayList<Movie> movies = new ArrayList<Movie>()
+    {{
+        add(new Movie("The Wizard of Oz", "King Vidor", 1939, 9.4, false));
+        add(new Movie("Jaws", "Stephen Spielberg", 1975, 9.2,  false));
+    }};
+
     public static void printBookList() {
         System.out.printf("%-35s%-25s%-4s\n", "Title", "Author", "Year");
         System.out.println("----------------------------------------------------------------");
         for (Book book : books){
             if(!book.getCheckedOut()){
-                System.out.printf("%-35s%-25s%-4s\n", book.getTitle(), book.getAuthor(), book.getDatePublished());
+                System.out.printf("%-35s%-25s%-4s\n", book.getTitle(), book.getCreator(), book.getYear());
             }
         }
         System.out.println("----------------------------------------------------------------");
     }
+
+    public static void printMovieList() {
+        System.out.printf("%-35s%-25s%-10s%-6s\n", "Title", "Director", "Year", "Rating");
+        System.out.println("----------------------------------------------------------------------------");
+        for (Movie movie : movies){
+            if(!movie.getCheckedOut()){
+                System.out.printf("%-35s%-25s%-10s%6s\n", movie.getTitle(), movie.getCreator(), movie.getYear(), movie.getRating());
+            }
+        }
+        System.out.println("----------------------------------------------------------------------------");
+    }
+
+
 
     public static String returnBook(String userChoice){
         Book selectedBook = findBook(userChoice);

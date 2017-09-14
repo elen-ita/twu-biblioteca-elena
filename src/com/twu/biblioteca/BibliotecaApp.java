@@ -9,6 +9,7 @@ public class BibliotecaApp {
     {{
         add("Quit");
         add("List Books");
+        add("List Movies");
         add("Checkout Book");
         add("Return Book");
     }};
@@ -50,12 +51,16 @@ public class BibliotecaApp {
             Library.printBookList();
             return true;
         }
-        else if (userChoice.equals("2")) {
+        else if(userChoice.equals("2")){
+            Library.printMovieList();
+            return true;
+        }
+        else if (userChoice.equals("3")) {
             System.out.print("Please type the title of the book you would like to checkout: ");
             System.out.println(Library.checkOutBook(readUserChoice()));
             return true;
         }
-        else if (userChoice.equals("3")) {
+        else if (userChoice.equals("4")) {
             System.out.print("Please type the title of the book you would like to return: ");
             System.out.println(Library.returnBook(readUserChoice()));
             return true;
