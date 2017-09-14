@@ -1,7 +1,7 @@
 package com.twu.biblioteca;
 
 import java.util.*;
-import com.twu.biblioteca.Library;
+
 
 public class BibliotecaApp {
 
@@ -52,20 +52,12 @@ public class BibliotecaApp {
         }
         else if (userChoice.equals("2")) {
             System.out.print("Please type the title of the book you would like to checkout: ");
-            if(Library.checkOutBook(readUserChoice())){
-                System.out.println("Thank you! Enjoy the book");
-            } else {
-                System.out.println("That book is not available");
-            }
+            System.out.println(Library.checkOutBook(readUserChoice()));
             return true;
         }
         else if (userChoice.equals("3")) {
             System.out.print("Please type the title of the book you would like to return: ");
-            if(Library.returnBook(readUserChoice())){
-                System.out.println("Thank you for returning the book");
-            } else {
-                System.out.println("That is not a valid book return");
-            }
+            System.out.println(Library.returnBook(readUserChoice()));
             return true;
         }
         else{

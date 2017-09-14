@@ -16,18 +16,6 @@ public class Book {
         this.checkedOut = checkedOut;
     }
 
-    public void setTitle(String newTitle){
-        this.title = newTitle;
-    }
-
-    public void setAuthor(String newAuthor){
-        this.author = newAuthor;
-    }
-
-    public void setDatePublished(int newDate){
-        this.datePublished = newDate;
-    }
-
     public void setCheckedOut(boolean newCheckedOut){
         this.checkedOut = newCheckedOut;
     }

@@ -1,7 +1,5 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.Book;
-import com.twu.biblioteca.BibliotecaApp;
 
 import java.util.ArrayList;
 
@@ -32,26 +30,34 @@ public class Library {
         System.out.println("----------------------------------------------------------------");
     }
 
-    public static boolean checkOutBook(String userChoice) {
-        for(Book book : books){
-            if(book.getTitle().equals(userChoice) && !book.getCheckedOut()) {
-                book.setCheckedOut(true);
-                return true;
-            }
+    public static String returnBook(String userChoice){
+        Book selectedBook = findBook(userChoice);
+        if(selectedBook != null && selectedBook.getCheckedOut()){
+            selectedBook.setCheckedOut(false);
+            return "Thank you for returning the book";
+        } else {
+            return "That is not a valid book return";
         }
-        return false;
     }
 
-    public static boolean returnBook(String userChoice){
-        for(Book book : books){
-            if(book.getTitle().equals(userChoice) && book.getCheckedOut()){
-                book.setCheckedOut(false);
-                return true;
-            }
+    public static String checkOutBook(String userChoice){
+        Book selectedBook = findBook(userChoice);
+        if(selectedBook != null && !selectedBook.getCheckedOut()){
+            selectedBook.setCheckedOut(true);
+            return "Thank you! Enjoy the book";
+        } else {
+            return "That book is not available";
         }
-        return false;
     }
 
+    public static Book findBook(String userChoice){
+        for(Book book : books){
+            if (book.getTitle().equals(userChoice)){
+                return book;
+            }
+        }
+        return null;
+    }
 }
 
 

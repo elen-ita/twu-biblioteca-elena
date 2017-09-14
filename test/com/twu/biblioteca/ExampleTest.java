@@ -1,10 +1,7 @@
 package com.twu.biblioteca;
 
-
 import org.junit.Test;
-import com.twu.biblioteca.BibliotecaApp;
-import com.twu.biblioteca.Book;
-import com.twu.biblioteca.Library;
+
 import static org.junit.Assert.assertEquals;
 
 public class ExampleTest {
@@ -24,64 +21,38 @@ public class ExampleTest {
 
     @Test
     public void testCheckOutAvailableBook() {
-        assertEquals(true, Library.checkOutBook("Lolita"));
-        boolean status = false;
-        for(Book book : Library.books){
-            if(book.getTitle().equals("Lolita")){
-                status = book.getCheckedOut();
-            }
-        }
-        assertEquals(true, status);
+        Library.checkOutBook("Lolita");
+        assertEquals(true, Library.findBook("Lolita").getCheckedOut());
     }
 
     @Test
     public void testCheckOutAlreadyCheckedOutBook() {
         Library.checkOutBook("Lolita");
-        assertEquals(false, Library.checkOutBook("Lolita"));
-        boolean status = false;
-        for(Book book : Library.books){
-            if(book.getTitle().equals("Lolita")){
-                status = book.getCheckedOut();
-            }
-        }
-        assertEquals(true, status);
+        assertEquals("That book is not available", Library.checkOutBook("Lolita"));
+        assertEquals(true, Library.findBook("Lolita").getCheckedOut());
     }
 
     @Test
     public void testCheckOutNonexistantBook() {
-        assertEquals(false, Library.checkOutBook("Not a Book"));
+        assertEquals("That book is not available", Library.checkOutBook("Not a Book"));
     }
 
     @Test
     public void testReturnCorrectBook() {
         Library.checkOutBook("Lolita");
-        assertEquals(true, Library.returnBook("Lolita"));
-        boolean status = true;
-        for(Book book : Library.books){
-            if(book.getTitle().equals("Lolita")){
-                status = book.getCheckedOut();
-            }
-        }
-        assertEquals(false, status);
+        Library.returnBook("Lolita");
+        assertEquals(false, Library.findBook("Lolita").getCheckedOut());
     }
-
 
     @Test
     public void testReturnNonexistantBook() {
-        assertEquals(false, Library.returnBook("Not a Book"));
+        assertEquals("That is not a valid book return", Library.returnBook("Not a Book"));
     }
-
 
     @Test
     public void testReturnBookThatHasNotBeenCheckedOut() {
-        assertEquals(false, Library.returnBook("Lolita"));
-        boolean status = true;
-        for(Book book : Library.books){
-            if(book.getTitle().equals("Lolita")){
-                status = book.getCheckedOut();
-            }
-        }
-        assertEquals(false, status);
+        assertEquals("That is not a valid book return", Library.returnBook("Lolita"));
+        assertEquals(false, Library.findBook("Lolita").getCheckedOut());
     }
 
 }
