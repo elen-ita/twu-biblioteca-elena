@@ -12,6 +12,8 @@ public class BibliotecaApp {
         add("List Movies");
         add("Checkout Book");
         add("Return Book");
+        add("Checkout Movie");
+        add("Return Movie");
     }};
 
 
@@ -56,13 +58,19 @@ public class BibliotecaApp {
             return true;
         }
         else if (userChoice.equals("3")) {
-            System.out.print("Please type the title of the book you would like to checkout: ");
-            System.out.println(Library.checkOutBook(readUserChoice()));
+            System.out.println(checkOutFromLibrary("book"));
             return true;
         }
         else if (userChoice.equals("4")) {
-            System.out.print("Please type the title of the book you would like to return: ");
-            System.out.println(Library.returnBook(readUserChoice()));
+            System.out.println(returnToLibrary("book"));
+            return true;
+        }
+        else if (userChoice.equals("5")) {
+            System.out.println(checkOutFromLibrary("movie"));
+            return true;
+        }
+        else if (userChoice.equals("6")) {
+            System.out.println(returnToLibrary("movie"));
             return true;
         }
         else{
@@ -71,7 +79,25 @@ public class BibliotecaApp {
         }
     }
 
-    public static String readUserChoice() {
+    public static String returnToLibrary(String mediaType) {
+        System.out.print("Please type the title of the " + mediaType + " you would like to return: ");
+        if(Library.returnItem(readUserChoice())){
+            return "Thank you for returning the " + mediaType;
+        } else {
+            return "That is not a valid " + mediaType + " return";
+        }
+    }
+
+    public static String checkOutFromLibrary(String mediaType) {
+        System.out.print("Please type the title of the " + mediaType + " you would like to checkout: ");
+        if(Library.checkOutItem(readUserChoice())){
+            return "Thank you! Enjoy the " + mediaType;
+        } else {
+            return "That " + mediaType + " is not available";
+        }
+    }
+
+    private static String readUserChoice() {
         Scanner reader = new Scanner(System.in);
         return reader.next().toString();
     }

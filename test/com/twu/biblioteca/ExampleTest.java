@@ -20,39 +20,40 @@ public class ExampleTest {
     //I'm Unsure of how to test void methods for ex methods that only print stuff
 
     @Test
-    public void testCheckOutAvailableBook() {
-        Library.checkOutBook("Lolita");
-        assertEquals(true, Library.findBook("Lolita").getCheckedOut());
+    public void testCheckOutItemAvailable() {
+        Library.checkOutItem("Lolita");
+        assertEquals(true, Library.find("Lolita").getCheckedOut());
     }
 
     @Test
-    public void testCheckOutAlreadyCheckedOutBook() {
-        Library.checkOutBook("Lolita");
-        assertEquals("That book is not available", Library.checkOutBook("Lolita"));
-        assertEquals(true, Library.findBook("Lolita").getCheckedOut());
+    public void testCheckOutItemAlreadyCheckedOut() {
+        Library.checkOutItem("Lolita");
+        assertEquals(false, Library.checkOutItem("Lolita"));
+        assertEquals(true, Library.find("Lolita").getCheckedOut());
     }
 
     @Test
-    public void testCheckOutNonexistantBook() {
-        assertEquals("That book is not available", Library.checkOutBook("Not a Book"));
+    public void testCheckOutItemNonexistant() {
+        assertEquals(false, Library.checkOutItem("Not a Book"));
     }
 
     @Test
-    public void testReturnCorrectBook() {
-        Library.checkOutBook("Lolita");
-        Library.returnBook("Lolita");
-        assertEquals(false, Library.findBook("Lolita").getCheckedOut());
+    public void testReturnItemCorrect() {
+        Library.checkOutItem("Lolita");
+        Library.returnItem("Lolita");
+        assertEquals(false, Library.find("Lolita").getCheckedOut());
     }
 
     @Test
-    public void testReturnNonexistantBook() {
-        assertEquals("That is not a valid book return", Library.returnBook("Not a Book"));
+    public void testReturnItemNonexistant() {
+        assertEquals(false, Library.returnItem("Not a Book"));
     }
 
     @Test
-    public void testReturnBookThatHasNotBeenCheckedOut() {
-        assertEquals("That is not a valid book return", Library.returnBook("Lolita"));
-        assertEquals(false, Library.findBook("Lolita").getCheckedOut());
+    public void testReturnItemNotCheckedOut() {
+        assertEquals(false, Library.returnItem("Lolita"));
+        assertEquals(false, Library.find("Lolita").getCheckedOut());
     }
+
 
 }
