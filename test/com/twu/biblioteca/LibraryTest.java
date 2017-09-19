@@ -13,7 +13,7 @@ public class LibraryTest {
     @Test
     public void testFindExistantItem(){
         Library myLib = new Library();
-        Media lolita = new Media("Lolita", "Vladimir Nabakov", 1955, "Book",null);
+        Media lolita = new Book("Lolita", "Vladimir Nabakov", 1955, null);
         assertTrue(lolita.isSameMedia(myLib.find("Lolita")));
     }
 

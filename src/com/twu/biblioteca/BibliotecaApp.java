@@ -1,54 +1,90 @@
 package com.twu.biblioteca;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.*;
-
 
 public class BibliotecaApp {
 
     public static void main(String[] args) {
-        new BibliotecaApp();
+        BibliotecaApp bibApp = new BibliotecaApp(System.in, System.out);
+        bibApp.mainMenu();
     }
 
-    private Library library;
-    private String userLoggedIn;
+    protected Library library;
+    protected String userLoggedIn;
+    protected List<String> menu;
+    protected ArrayList<User> users;
+    protected Printer printer;
 
-    private List<String> menu = new ArrayList<String>()
-    {{
-        add("Quit");
-        add("List Books");
-        add("List Movies");
-        add("Checkout Book");
-        add("Return Book");
-        add("Checkout Movie");
-        add("Return Movie");
-    }};
-
-    private ArrayList<User> users = new ArrayList<User>()
-    {{
-        add(new User("Bob Smith", "bsmith", "123", "bsmith@gmail.com", "123-456-7890"));
-    }};
-
-    public BibliotecaApp(){
+    public BibliotecaApp(InputStream input, OutputStream output){
         library = new Library();
-        userLoggedIn = null;
-        welcomeMessage();
-        mainMenu();
+        printer = new Printer(input, output, library);
+        initializeMenu();
+        initializeUsers();
     }
 
-    private void welcomeMessage() {
-         System.out.println("Hello, Welcome to Biblioteca!\n");
+    public void initializeUsers() {
+        users = new ArrayList<User>();
+        users.add(new User("Bob Smith", "bsmith", "123", "bsmith@gmail.com", "123-456-7890"));
+    }
+
+    public void initializeMenu() {
+        menu = new ArrayList<String>();
+        menu.add("Quit");
+        menu.add("List Books");
+        menu.add("List Movies");
+        menu.add("Checkout Book");
+        menu.add("Return Book");
+        menu.add("Checkout Movie");
+        menu.add("Return Movie");
+    }
+
+    public void mainMenu() {
+        printer.printWelcomeMessage();
+        do {
+            printer.printMainMenu(menu, userLoggedIn);
+        }while(decideMainMenuAction(readUserChoice()));
+    }
+
+    private Boolean decideMainMenuAction(String userChoice) {
+        if (userChoice.equals("0")){
+            printer.processOutput("Program terminating\n");
+            return false;
+        }
+        switch(userChoice) {
+            case "1": printer.printBookList();
+                break;
+            case "2": printer.printMovieList();
+                break;
+            case "3": printer.processOutput(checkOutFromLibrary("book"));
+                break;
+            case "4": printer.processOutput(returnToLibrary("book"));
+                break;
+            case "5": printer.processOutput(checkOutFromLibrary("movie"));
+                break;
+            case "6": printer.processOutput(returnToLibrary("movie"));
+                break;
+            case "7": if (userLoggedIn == null){
+                        printer.processOutput("Select a valid option!\n");
+                }
+                showUserInfo();
+                break;
+            default: printer.processOutput("Select a valid option!\n");
+        }
+        return true;
     }
 
     private void logIn(){
-        System.out.println("Please log in:\n" + "Enter your username: ");
+        printer.processOutput("Please log in:\n" + "Enter your username: \n");
         User user = findUser(readUserChoice());
         while(user == null){
-            System.out.println("Please enter a valid username: ");
+            printer.processOutput("Please enter a valid username: \n");
             user = findUser(readUserChoice());
         }
-        System.out.println("Enter your password: ");
+        printer.processOutput("Enter your password: \n");
         while(!user.getPassword().equals(readUserChoice())) {
-            System.out.println("Incorrect password, please try again: ");
+            printer.processOutput("Incorrect password, please try again: \n");
         }
         userLoggedIn = user.userID;
     }
@@ -62,68 +98,20 @@ public class BibliotecaApp {
         return null;
     }
 
-    private void mainMenu() {
-        do {
-            displayMainMenu();
-        }while(decideMainMenuAction(readUserChoice()));
-    }
-
-    private void displayMainMenu() {
-        System.out.println("Main Menu: ");
-        System.out.println("-----------------------");
-        for (int i = 0; i < menu.size(); i++){
-            System.out.println("Option " + i + ": " + menu.get(i));
-        }
-        if(userLoggedIn != null){
-            System.out.println("Option " + menu.size() + ": See your user info");
-        }
-        System.out.println("-----------------------");
-    }
-
-    private Boolean decideMainMenuAction(String userChoice) {
-        if (userChoice.equals("0")){
-            return false;
-        }
-        switch(Integer.valueOf(userChoice)) {
-            case 1: printBookList();
-                    break;
-            case 2: printMovieList();
-                    break;
-            case 3: System.out.println(checkOutFromLibrary("book"));
-                    break;
-            case 4: System.out.println(returnToLibrary("book"));
-                    break;
-            case 5: System.out.println(checkOutFromLibrary("movie"));
-                    break;
-            case 6: System.out.println(returnToLibrary("movie"));
-                    break;
-            case 7: if (userLoggedIn == null){
-                        System.out.println("Select a valid option!");
-                    }
-                    showUserInfo();
-                    break;
-            default: System.out.println("Select a valid option!");
-        }
-        return true;
-    }
-
     private void showUserInfo(){
         User user = findUser(userLoggedIn);
-        System.out.println("Name:\t" + user.getName());
-        System.out.println("Email:\t" + user.getEmail());
-        System.out.println("Phone:\t" + user.getPhone());
+        printer.printUser(user);
     }
-
 
     private String returnToLibrary(String mediaType) {
         if (userLoggedIn == null){
             logIn();
         }
-        System.out.print("Please type the title of the " + mediaType + " you would like to return: ");
+        printer.processOutput("Please type the title of the " + mediaType + " you would like to return: \n");
         if(library.returnItem(readUserChoice())){
-            return "Thank you for returning the " + mediaType;
+            return "Thank you for returning the " + mediaType + "\n";
         } else {
-            return "That is not a valid " + mediaType + " return";
+            return "That is not a valid " + mediaType + " return\n";
         }
     }
 
@@ -131,38 +119,15 @@ public class BibliotecaApp {
         if (userLoggedIn == null){
             logIn();
         }
-        System.out.print("Please type the title of the " + mediaType + " you would like to checkout: ");
+        printer.processOutput("Please type the title of the " + mediaType + " you would like to checkout: \n");
         if(library.checkOutItem(readUserChoice(), userLoggedIn)){
-            return "Thank you! Enjoy the " + mediaType;
+            return "Thank you! Enjoy the " + mediaType + "\n";
         } else {
-            return "That " + mediaType + " is not available";
+            return "That " + mediaType + " is not available\n";
         }
     }
 
     private String readUserChoice() {
-        Scanner reader = new Scanner(System.in);
-        return reader.next().toString();
-    }
-
-    public void printBookList() {
-        System.out.printf("%-35s%-25s%-4s\n", "Title", "Author", "Year");
-        System.out.println("----------------------------------------------------------------");
-        for (Media item : library.getMedia()){
-            if(item.getCheckedOutTo() == null && item.getMediaType().equals("Book")){
-                System.out.printf("%-35s%-25s%-4s\n", item.getTitle(), item.getCreator(), item.getYear());
-            }
-        }
-        System.out.println("----------------------------------------------------------------");
-    }
-
-    public void printMovieList() {
-        System.out.printf("%-35s%-25s%-10s%-6s\n", "Title", "Director", "Year", "Rating");
-        System.out.println("----------------------------------------------------------------------------");
-        for (Media item : library.getMedia()){
-            if(item.getCheckedOutTo() == null && item.getMediaType().equals("Movie")){
-                System.out.printf("%-35s%-25s%-10s%6s\n", item.getTitle(), item.getCreator(), item.getYear(), item.getRating());
-            }
-        }
-        System.out.println("----------------------------------------------------------------------------");
+        return printer.getInputLine();
     }
 }
