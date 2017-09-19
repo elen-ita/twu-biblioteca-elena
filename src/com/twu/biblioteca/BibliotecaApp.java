@@ -5,19 +5,12 @@ import java.util.*;
 
 public class BibliotecaApp {
 
-    public Library library;
-    private String userLoggedIn;
-
-    public BibliotecaApp(){
-        userLoggedIn = null;
-        library = new Library();
-        welcomeMessage();
-        mainMenu();
-    }
-
     public static void main(String[] args) {
         new BibliotecaApp();
     }
+
+    private Library library;
+    private String userLoggedIn;
 
     private List<String> menu = new ArrayList<String>()
     {{
@@ -30,22 +23,23 @@ public class BibliotecaApp {
         add("Return Movie");
     }};
 
-    public ArrayList<User> users = new ArrayList<User>()
+    private ArrayList<User> users = new ArrayList<User>()
     {{
         add(new User("Bob Smith", "bsmith", "123", "bsmith@gmail.com", "123-456-7890"));
     }};
 
-
-
-    public String getUserLoggedIn(){
-        return userLoggedIn;
+    public BibliotecaApp(){
+        library = new Library();
+        userLoggedIn = null;
+        welcomeMessage();
+        mainMenu();
     }
 
     private void welcomeMessage() {
          System.out.println("Hello, Welcome to Biblioteca!\n");
     }
 
-    public void logIn(){
+    private void logIn(){
         System.out.println("Please log in:\n" + "Enter your username: ");
         User user = findUser(readUserChoice());
         while(user == null){
@@ -59,7 +53,7 @@ public class BibliotecaApp {
         userLoggedIn = user.userID;
     }
 
-    public User findUser(String userID){
+    private User findUser(String userID){
         for(User user : users){
             if (user.getUserID().equals(userID)){
                 return user;
@@ -90,52 +84,38 @@ public class BibliotecaApp {
         if (userChoice.equals("0")){
             return false;
         }
-        else if(userChoice.equals("1")){
-            printBookList();
-            return true;
+        switch(Integer.valueOf(userChoice)) {
+            case 1: printBookList();
+                    break;
+            case 2: printMovieList();
+                    break;
+            case 3: System.out.println(checkOutFromLibrary("book"));
+                    break;
+            case 4: System.out.println(returnToLibrary("book"));
+                    break;
+            case 5: System.out.println(checkOutFromLibrary("movie"));
+                    break;
+            case 6: System.out.println(returnToLibrary("movie"));
+                    break;
+            case 7: if (userLoggedIn == null){
+                        System.out.println("Select a valid option!");
+                    }
+                    showUserInfo();
+                    break;
+            default: System.out.println("Select a valid option!");
         }
-        else if(userChoice.equals("2")){
-            printMovieList();
-            return true;
-        }
-        else if (userChoice.equals("3")) {
-            System.out.println(checkOutFromLibrary("book"));
-            return true;
-        }
-        else if (userChoice.equals("4")) {
-            System.out.println(returnToLibrary("book"));
-            return true;
-        }
-        else if (userChoice.equals("5")) {
-            System.out.println(checkOutFromLibrary("movie"));
-            return true;
-        }
-        else if (userChoice.equals("6")) {
-            System.out.println(returnToLibrary("movie"));
-            return true;
-        }
-        else if (userChoice.equals("7")){
-            if (userLoggedIn == null){
-                System.out.println("Select a valid option!");
-            }
-            showUserInfo();
-            return true;
-        }
-        else{
-            System.out.println("Select a valid option!");
-            return true;
-        }
+        return true;
     }
 
     private void showUserInfo(){
         User user = findUser(userLoggedIn);
-        System.out.println("Name: " + user.getName());
-        System.out.println("Email: " + user.getEmail());
-        System.out.println("Phone: " + user.getPhone());
+        System.out.println("Name:\t" + user.getName());
+        System.out.println("Email:\t" + user.getEmail());
+        System.out.println("Phone:\t" + user.getPhone());
     }
 
 
-    public String returnToLibrary(String mediaType) {
+    private String returnToLibrary(String mediaType) {
         if (userLoggedIn == null){
             logIn();
         }
@@ -147,7 +127,7 @@ public class BibliotecaApp {
         }
     }
 
-    public String checkOutFromLibrary(String mediaType) {
+    private String checkOutFromLibrary(String mediaType) {
         if (userLoggedIn == null){
             logIn();
         }
