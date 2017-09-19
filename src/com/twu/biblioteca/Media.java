@@ -9,28 +9,28 @@ public class Media {
     protected int year;
     protected double rating;
     protected String mediaType;
-    protected boolean checkedOut;
+    protected String checkedOutTo;
 
 
-    public Media (String title, String creator, int year, String mediaType, boolean checkedOut){
+    public Media (String title, String creator, int year, String mediaType, String checkedOutTo){
         this.title = title;
         this.creator = creator;
         this.year = year;
         this. mediaType = mediaType;
-        this.checkedOut = checkedOut;
+        this.checkedOutTo = checkedOutTo;
     }
 
-    public Media (String title, String creator, int year, double rating, String mediaType, boolean checkedOut){
+    public Media (String title, String creator, int year, double rating, String mediaType, String checkedOutTo){
         this.title = title;
         this.creator = creator;
         this.year = year;
         this.rating = rating;
         this. mediaType = mediaType;
-        this.checkedOut = checkedOut;
+        this.checkedOutTo = checkedOutTo;
     }
 
-    public void setCheckedOut(boolean newCheckedOut){
-        this.checkedOut = newCheckedOut;
+    public void setCheckedOutTo(String newCheckedOut){
+        this.checkedOutTo = newCheckedOut;
     }
 
     public String getTitle(){
@@ -49,7 +49,17 @@ public class Media {
 
     public String getMediaType() { return mediaType; }
 
-    public boolean getCheckedOut(){
-        return checkedOut;
+    public String getCheckedOutTo(){
+        return checkedOutTo;
     }
+
+
+    public boolean isSameMedia(Media otherMedia){
+        return (this.title == otherMedia.title &&
+                this.creator == otherMedia.creator &&
+                this.year == otherMedia.year &&
+                this. mediaType == otherMedia.mediaType &&
+                this.checkedOutTo == otherMedia.checkedOutTo);
+    }
+
 }
