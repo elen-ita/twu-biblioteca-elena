@@ -1,13 +1,13 @@
 package com.twu.biblioteca;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.*;
 
 public class BibliotecaApp {
 
     public static void main(String[] args) {
-        BibliotecaApp bibApp = new BibliotecaApp(System.in, System.out);
+        Library library = new Library();
+        Printer printer = new Printer(System.in, System.out, library);
+        BibliotecaApp bibApp = new BibliotecaApp(printer);
         bibApp.mainMenu();
     }
 
@@ -17,20 +17,20 @@ public class BibliotecaApp {
     protected ArrayList<User> users;
     protected Printer printer;
 
-    public BibliotecaApp(InputStream input, OutputStream output){
-        library = new Library();
-        printer = new Printer(input, output, library);
+    public BibliotecaApp(Printer printer) {
+        this.printer = printer;
+        this.library = printer.library;
         initializeMenu();
         initializeUsers();
     }
 
     public void initializeUsers() {
-        users = new ArrayList<User>();
+        users = new ArrayList<>();
         users.add(new User("Bob Smith", "bsmith", "123", "bsmith@gmail.com", "123-456-7890"));
     }
 
     public void initializeMenu() {
-        menu = new ArrayList<String>();
+        menu = new ArrayList<>();
         menu.add("Quit");
         menu.add("List Books");
         menu.add("List Movies");
@@ -44,71 +44,79 @@ public class BibliotecaApp {
         printer.printWelcomeMessage();
         do {
             printer.printMainMenu(menu, userLoggedIn);
-        }while(decideMainMenuAction(readUserChoice()));
+        } while (decideMainMenuAction(readUserChoice()));
     }
 
     private Boolean decideMainMenuAction(String userChoice) {
-        if (userChoice.equals("0")){
+        if (userChoice.equals("0")) {
             printer.processOutput("Program terminating\n");
             return false;
         }
-        switch(userChoice) {
-            case "1": printer.printBookList();
+        switch (userChoice) {
+            case "1":
+                printer.printBookList();
                 break;
-            case "2": printer.printMovieList();
+            case "2":
+                printer.printMovieList();
                 break;
-            case "3": printer.processOutput(checkOutFromLibrary("book"));
+            case "3":
+                printer.processOutput(checkOutFromLibrary("book"));
                 break;
-            case "4": printer.processOutput(returnToLibrary("book"));
+            case "4":
+                printer.processOutput(returnToLibrary("book"));
                 break;
-            case "5": printer.processOutput(checkOutFromLibrary("movie"));
+            case "5":
+                printer.processOutput(checkOutFromLibrary("movie"));
                 break;
-            case "6": printer.processOutput(returnToLibrary("movie"));
+            case "6":
+                printer.processOutput(returnToLibrary("movie"));
                 break;
-            case "7": if (userLoggedIn == null){
-                        printer.processOutput("Select a valid option!\n");
+            case "7":
+                if (userLoggedIn == null) {
+                    printer.processOutput("Select a valid option!\n");
                 }
                 showUserInfo();
                 break;
-            default: printer.processOutput("Select a valid option!\n");
+            default:
+                printer.processOutput("Select a valid option!\n");
         }
         return true;
     }
 
-    private void logIn(){
+    private void logIn() {
         printer.processOutput("Please log in:\n" + "Enter your username: \n");
         User user = findUser(readUserChoice());
-        while(user == null){
+        while (user == null) {
             printer.processOutput("Please enter a valid username: \n");
             user = findUser(readUserChoice());
         }
         printer.processOutput("Enter your password: \n");
-        while(!user.getPassword().equals(readUserChoice())) {
+        while (!user.getPassword().equals(readUserChoice())) {
             printer.processOutput("Incorrect password, please try again: \n");
         }
         userLoggedIn = user.userID;
     }
 
-    private User findUser(String userID){
-        for(User user : users){
-            if (user.getUserID().equals(userID)){
+    private User findUser(String userID) {
+        for (User user : users) {
+            if (user.getUserID().equals(userID)) {
                 return user;
             }
         }
         return null;
     }
 
-    private void showUserInfo(){
+    private void showUserInfo() {
         User user = findUser(userLoggedIn);
         printer.printUser(user);
     }
 
     private String returnToLibrary(String mediaType) {
-        if (userLoggedIn == null){
+        if (userLoggedIn == null) {
             logIn();
         }
         printer.processOutput("Please type the title of the " + mediaType + " you would like to return: \n");
-        if(library.returnItem(readUserChoice())){
+        if (library.returnItem(readUserChoice())) {
             return "Thank you for returning the " + mediaType + "\n";
         } else {
             return "That is not a valid " + mediaType + " return\n";
@@ -116,11 +124,11 @@ public class BibliotecaApp {
     }
 
     private String checkOutFromLibrary(String mediaType) {
-        if (userLoggedIn == null){
+        if (userLoggedIn == null) {
             logIn();
         }
         printer.processOutput("Please type the title of the " + mediaType + " you would like to checkout: \n");
-        if(library.checkOutItem(readUserChoice(), userLoggedIn)){
+        if (library.checkOutItem(readUserChoice(), userLoggedIn)) {
             return "Thank you! Enjoy the " + mediaType + "\n";
         } else {
             return "That " + mediaType + " is not available\n";

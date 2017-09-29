@@ -9,8 +9,6 @@ public class Movie extends Media {
         this.rating = rating;
     }
 
-    public double getRating(){ return rating; }
-
     public String toString() {
         return String.format("%-35s%-25s%-10s%6s\n", this.title, this.creator, this.year, this.rating);
     }

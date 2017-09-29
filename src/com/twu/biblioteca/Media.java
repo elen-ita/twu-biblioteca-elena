@@ -22,14 +22,6 @@ public abstract class Media {
         return title;
     }
 
-    public String getCreator(){
-        return creator;
-    }
-
-    public int getYear(){
-        return year;
-    }
-
     public String getCheckedOutTo(){
         return checkedOutTo;
     }

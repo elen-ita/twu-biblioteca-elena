@@ -10,6 +10,11 @@ public class Library {
         initializeLibrary();
     }
 
+    // public Library(MediaRepository repo) {
+    // repo = repo;
+    // repo.getAllItems()
+    // }
+
     public void initializeLibrary() {
         media = new ArrayList<Media>();
         media.add(new Book("The Great Gatsby","F. Scott Fitzgerald", 1925, null));
